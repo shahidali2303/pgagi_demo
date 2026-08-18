@@ -1,20 +1,18 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
 @theme {
-  /* Custom colors can be defined here if needed */
-  --color-primary: #3b82f6;
-  --color-secondary: #8b5cf6;
-
-  /* Dark mode is enabled by default in v4 */
+  /* Your Custom Dark Mode Palette */
+  --color-bg-base: #121212; /* Main Background */
+  --color-bg-surface: #1e1e1e; /* Slightly lighter for Sidebar/Header/Cards */
+  --color-text-primary: #e0e0e0; /* Primary Text */
+  --color-text-secondary: #b0b0b0; /* Secondary Text */
+  --color-border-base: #444444; /* Borders/Dividers */
+  --color-accent-base: #888888; /* Accent */
 }
 
-/* Custom global styles */
 @layer base {
   html {
     scroll-behavior: smooth;
   }
-}
-
-@layer utilities {
-  /* Custom utility classes if needed */
 }

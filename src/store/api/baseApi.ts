@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-// We will inject specific endpoints (News, TMDB, Social) into this base API later
+// Base API - we will inject specific endpoints (News, TMDB, Social) in Phase 3
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: "/" }),
   endpoints: () => ({}),
+  tagTypes: ["News", "Recommendations", "Social", "Favorites"],
 });

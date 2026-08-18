@@ -6,7 +6,7 @@ interface UiState {
 }
 
 const initialState: UiState = {
-  isDarkMode: false,
+  isDarkMode: false, // Start with light mode by default
   isSidebarOpen: true,
 };
 
@@ -16,12 +16,14 @@ export const uiSlice = createSlice({
   reducers: {
     toggleDarkMode: (state) => {
       state.isDarkMode = !state.isDarkMode;
+      console.log("Toggled dark mode to:", state.isDarkMode); // Debug
     },
     toggleSidebar: (state) => {
       state.isSidebarOpen = !state.isSidebarOpen;
     },
     setDarkMode: (state, action: PayloadAction<boolean>) => {
       state.isDarkMode = action.payload;
+      console.log("Set dark mode to:", action.payload); // Debug
     },
   },
 });

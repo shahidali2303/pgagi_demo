@@ -1,8 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/query/react";
+import { setupListeners } from "@reduxjs/toolkit/query";
 import {
   persistReducer,
-  persistStore,
   FLUSH,
   REHYDRATE,
   PAUSE,
@@ -10,7 +9,7 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage
+import storage from "redux-persist/lib/storage";
 
 import uiReducer from "./slices/uiSlice";
 import { baseApi } from "./api/baseApi";
@@ -19,7 +18,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["ui"], // Only persist UI state (like dark mode) for now
+  whitelist: ["ui"], // Persist UI state (like dark mode)
 };
 
 const rootReducer = combineReducers({
