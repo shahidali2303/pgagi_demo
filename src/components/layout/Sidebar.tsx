@@ -34,7 +34,7 @@ export function Sidebar() {
   };
 
   const toggleLanguage = () => {
-    const newLang = i18n.language === "en" ? "es" : "en";
+    const newLang = i18n.resolvedLanguage === "en" ? "es" : "en";
     i18n.changeLanguage(newLang);
   };
 
@@ -104,10 +104,10 @@ export function Sidebar() {
                   aria-hidden="true"
                   className="text-slate-400 group-hover:text-slate-600 dark:text-text-secondary dark:group-hover:text-text-primary transition-colors"
                 />
-                {i18n.language === "en" ? "English" : "Español"}
+                {i18n.resolvedLanguage === "en" ? "English" : "Español"}
               </span>
               <span className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-500 dark:bg-bg-base dark:text-text-secondary">
-                {i18n.language === "en" ? "EN" : "ES"}
+                {i18n.resolvedLanguage === "en" ? "EN" : "ES"}
               </span>
             </button>
 

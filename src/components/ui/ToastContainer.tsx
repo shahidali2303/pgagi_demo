@@ -51,7 +51,7 @@ function ToastItem({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, x: 100, scale: 0.9 }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      className="pointer-events-auto flex items-center gap-3 rounded-lg border border-slate-200 dark:border-border-base bg-white dark:bg-bg-surface px-4 py-3 shadow-xl min-w-[300px]"
+      className="pointer-events-auto flex items-center gap-3 rounded-lg border border-slate-200 dark:border-border-base bg-white dark:bg-bg-surface px-4 py-3 shadow-xl min-w-75"
     >
       {icons[toast.type]}
       <p className="text-sm font-medium text-slate-900 dark:text-text-primary flex-1">
