@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
-import { removeToast, type Toast } from "@/store/slices/uiSlice"; // 1. Import the Toast type
+import { removeToast, type Toast } from "@/store/slices/uiSlice";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle, Info, XCircle, X } from "lucide-react";
 
@@ -11,7 +11,7 @@ export function ToastContainer() {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none">
+    <div className="fixed bottom-6 right-6 z-100 flex flex-col gap-3 pointer-events-none">
       <AnimatePresence>
         {toasts.map((toast) => (
           <ToastItem
