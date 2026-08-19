@@ -1,2 +1,0 @@
-{"version":8,"type":"context-options","origin":"testRunner","browserName":"","playwrightVersion":"1.62.1","options":{},"platform":"win32","wallTime":1787126958346,"monotonicTime":127691.693,"sdkLanguage":"javascript"}
-{"type":"before","callId":"hook@1","stepId":"hook@1","startTime":127817.633,"class":"Test","method":"hook","title":"Before Hooks","params":{},"stack":[]}
