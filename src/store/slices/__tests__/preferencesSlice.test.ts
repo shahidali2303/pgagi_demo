@@ -6,7 +6,6 @@ import preferencesReducer, {
 
 describe("preferencesSlice", () => {
   it("should handle initial state", () => {
-    // FIX: Match the actual initial state from your slice
     expect(preferencesReducer(undefined, { type: "unknown" })).toEqual({
       selectedCategories: ["technology", "entertainment"],
     });

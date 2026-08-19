@@ -23,13 +23,12 @@ export const preferencesSlice = createSlice({
         state.selectedCategories.push(category);
       }
     },
-    // ADD THIS ACTION:
+
     clearAllCategories: (state) => {
       state.selectedCategories = [];
     },
   },
 });
 
-// Make sure to export the new action here:
 export const { toggleCategory, clearAllCategories } = preferencesSlice.actions;
 export default preferencesSlice.reducer;

@@ -44,10 +44,6 @@ function SortableCard({ content }: { content: ContentItem }) {
 
   return (
     <div ref={setNodeRef} style={style} className="relative group/card">
-      {/* 
-        FIX: Drag handle is now always 50% visible, moves to top-right, 
-        and becomes fully opaque on hover. 
-      */}
       <div
         {...attributes}
         {...listeners}

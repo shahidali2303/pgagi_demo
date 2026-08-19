@@ -82,7 +82,6 @@ export function ContentCard({ content }: ContentCardProps) {
 
         {/* Action Buttons */}
         <div className="mt-auto flex items-center justify-between border-t border-slate-100 dark:border-border-base pt-4">
-          {/* FIX: Use an <a> tag for reliable external linking, with a fallback if no URL exists */}
           {content.url ? (
             <a
               href={content.url}

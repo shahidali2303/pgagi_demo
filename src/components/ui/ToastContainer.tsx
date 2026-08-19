@@ -25,7 +25,6 @@ export function ToastContainer() {
   );
 }
 
-// 2. Apply the strict Toast type to the prop
 function ToastItem({
   toast,
   onDismiss,
@@ -54,7 +53,6 @@ function ToastItem({
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
       className="pointer-events-auto flex items-center gap-3 rounded-lg border border-slate-200 dark:border-border-base bg-white dark:bg-bg-surface px-4 py-3 shadow-xl min-w-[300px]"
     >
-      {/* 3. TypeScript now knows toast.type is strictly 'success' | 'info' | 'error' */}
       {icons[toast.type]}
       <p className="text-sm font-medium text-slate-900 dark:text-text-primary flex-1">
         {toast.message}

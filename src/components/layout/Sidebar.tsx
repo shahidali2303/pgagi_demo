@@ -10,14 +10,14 @@ import {
   X,
   LogOut,
   Languages,
-} from "lucide-react"; // Added Languages
+} from "lucide-react";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { toggleSidebar } from "@/store/slices/uiSlice";
 import { logout } from "@/store/slices/authSlice";
 import { useTranslation } from "react-i18next";
 
 export function Sidebar() {
-  const { t, i18n } = useTranslation(); // Added i18n
+  const { t, i18n } = useTranslation();
   const isOpen = useAppSelector((state) => state.ui.isSidebarOpen);
   const dispatch = useAppDispatch();
   const pathname = usePathname();
@@ -33,7 +33,6 @@ export function Sidebar() {
     dispatch(logout());
   };
 
-  // Added language toggle logic
   const toggleLanguage = () => {
     const newLang = i18n.language === "en" ? "es" : "en";
     i18n.changeLanguage(newLang);
@@ -91,7 +90,7 @@ export function Sidebar() {
             })}
           </nav>
 
-          {/* Bottom Section: Language + Logout */}
+          {/* Bottom Section */}
           <div className="border-t border-slate-200 dark:border-border-base p-4 space-y-1.5">
             {/* Language Toggler */}
             <button

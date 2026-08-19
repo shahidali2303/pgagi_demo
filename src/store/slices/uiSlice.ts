@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// 1. Define the Toast type
 export interface Toast {
   id: string;
   message: string;

@@ -1,35 +1,36 @@
-import { describe, it, expect, vi } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { renderHook, act } from "@testing-library/react";
 import { useDebounce } from "../useDebounce";
 
 describe("useDebounce", () => {
-  vi.useFakeTimers();
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
 
   it("should return the initial value immediately", () => {
-    const { result } = renderHook(() => useDebounce("test", 500));
-    expect(result.current).toBe("test");
+    const { result } = renderHook(() => useDebounce("initial", 500));
+    expect(result.current).toBe("initial");
   });
 
-  it("should debounce the value update", async () => {
+  it("should debounce the value update", () => {
     const { result, rerender } = renderHook(
-      ({ value }) => useDebounce(value, 500),
-      {
-        initialProps: { value: "initial" },
-      },
+      ({ value, delay }) => useDebounce(value, delay),
+      { initialProps: { value: "initial", delay: 500 } },
     );
 
-    rerender({ value: "updated" });
+    rerender({ value: "updated", delay: 500 });
 
-    // Value should not change immediately
     expect(result.current).toBe("initial");
 
-    // Fast-forward time by 500ms
-    vi.advanceTimersByTime(500);
-
-    await waitFor(() => {
-      expect(result.current).toBe("updated");
+    act(() => {
+      vi.advanceTimersByTime(500);
     });
-  });
 
-  vi.useRealTimers();
+    // Now the 500ms has passed, so it should be the updated value
+    expect(result.current).toBe("updated");
+  });
 });

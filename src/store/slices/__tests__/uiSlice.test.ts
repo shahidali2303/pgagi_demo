@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import uiReducer, { toggleDarkMode, setSearchQuery } from "../uiSlice";
 
 describe("uiSlice", () => {
-  // FIX: Added 'toasts: []' to match the current UiState interface
   const initialState = {
     isDarkMode: false,
     isSidebarOpen: true,
