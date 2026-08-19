@@ -1,0 +1,22 @@
+{
+  "nav": {
+    "dashboard": "Panel",
+    "trending": "Tendencias",
+    "favorites": "Favoritos",
+    "settings": "Configuración"
+  },
+  "header": {
+    "searchPlaceholder": "Buscar noticias, películas o publicaciones...",
+    "user": "Usuario",
+    "logout": "Cerrar sesión"
+  },
+  "dashboard": {
+    "title": "Tu Feed Personalizado",
+    "fetching": "Obteniendo contenido en vivo...",
+    "showing": "Mostrando {{count}} de {{total}} elementos",
+    "matching": "coincidiendo con \"{{query}}\"",
+    "noResults": "No se encontraron resultados para \"{{query}}\".",
+    "noContent": "No se encontró contenido.",
+    "loadMore": "Cargar más"
+  }
+}

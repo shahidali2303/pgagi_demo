@@ -5,6 +5,7 @@ import { Heart, ExternalLink, Play } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toggleFavorite } from "@/store/slices/favoritesSlice";
 import { ContentItem } from "@/types";
+import { addToast } from "@/store/slices/uiSlice";
 
 interface ContentCardProps {
   content: ContentItem;
@@ -19,6 +20,15 @@ export function ContentCard({ content }: ContentCardProps) {
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
     dispatch(toggleFavorite(content));
+
+    const isAdding = !isFavorite;
+
+    dispatch(
+      addToast({
+        message: isAdding ? "Added to favorites!" : "Removed from favorites",
+        type: "success",
+      }),
+    );
   };
 
   return (
@@ -38,6 +48,12 @@ export function ContentCard({ content }: ContentCardProps) {
           alt={content.title}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
           loading="lazy"
+          onError={(e) => {
+            // If the API image fails to load, swap it to a reliable fallback
+            const target = e.target as HTMLImageElement;
+            target.onerror = null;
+            target.src = `https://picsum.photos/seed/${content.id}/800/600`;
+          }}
         />
         {/* Category Badge */}
         <div className="absolute top-3 left-3 rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm capitalize">
@@ -51,12 +67,8 @@ export function ContentCard({ content }: ContentCardProps) {
           <span className="text-xs font-semibold text-accent-base uppercase tracking-wider">
             {content.source}
           </span>
-          <span className="text-xs text-slate-400 dark:text-text-secondary">
-            {content.type === "news"
-              ? "Article"
-              : content.type === "movie"
-                ? "Movie"
-                : "Post"}
+          <span className="text-xs text-slate-400 dark:text-text-secondary capitalize">
+            {content.type}
           </span>
         </div>
 
@@ -70,21 +82,31 @@ export function ContentCard({ content }: ContentCardProps) {
 
         {/* Action Buttons */}
         <div className="mt-auto flex items-center justify-between border-t border-slate-100 dark:border-border-base pt-4">
-          <button
-            className="flex items-center gap-2 text-sm font-medium cursor-pointer text-slate-700 dark:text-text-primary hover:text-accent-base dark:hover:text-accent-base transition-colors"
-            onClick={() => content.url && window.open(content.url, "_blank")}
-          >
-            {content.type === "movie" ? (
-              <Play size={16} />
-            ) : (
+          {/* FIX: Use an <a> tag for reliable external linking, with a fallback if no URL exists */}
+          {content.url ? (
+            <a
+              href={content.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-text-primary hover:text-accent-base dark:hover:text-accent-base transition-colors"
+            >
+              {content.type === "movie" ? (
+                <Play size={16} />
+              ) : (
+                <ExternalLink size={16} />
+              )}
+              {content.type === "movie" ? "Watch Now" : "Read More"}
+            </a>
+          ) : (
+            <span className="flex items-center gap-2 text-sm font-medium text-slate-400 cursor-not-allowed">
               <ExternalLink size={16} />
-            )}
-            {content.type === "movie" ? "Watch Now" : "Read More"}
-          </button>
+              No Link Available
+            </span>
+          )}
 
           <button
             onClick={handleFavorite}
-            className={`rounded-full p-2 transition-all duration-200 cursor-pointer ${
+            className={`rounded-full p-2 cursor-pointer transition-all duration-200 ${
               isFavorite
                 ? "bg-red-50 text-red-500 dark:bg-red-500/10"
                 : "bg-slate-100 text-slate-400 hover:bg-slate-200 dark:bg-bg-base dark:text-text-secondary dark:hover:bg-slate-800"

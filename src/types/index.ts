@@ -6,14 +6,24 @@ export type Category =
   | "health";
 
 export interface NewsArticle {
-  id: string;
+  id: number;
   title: string;
-  description: string;
+  summary: string;
   url: string;
-  urlToImage: string;
-  source: string;
-  category: Category;
-  publishedAt: string;
+  image_url: string;
+  news_site: string;
+  published_at: string;
+}
+
+export interface SocialPost {
+  id: number;
+  title: string;
+  url: string;
+  cover_image: string;
+  author: string;
+  author_image: string;
+  tags: string[];
+  published_at: string;
 }
 
 export interface Movie {
@@ -22,16 +32,6 @@ export interface Movie {
   overview: string;
   poster_path: string;
   release_date: string;
-  genre_ids: number[];
-}
-
-export interface SocialPost {
-  id: string;
-  author: string;
-  authorAvatar: string;
-  content: string;
-  timestamp: string;
-  likes: number;
 }
 
 export interface ContentItem {

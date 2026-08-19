@@ -4,49 +4,71 @@ import { useMemo, useState } from "react";
 import { useAppSelector } from "@/store/hooks";
 import { useGetNewsQuery } from "@/store/api/newsApi";
 import { useGetRecommendationsQuery } from "@/store/api/recommendationsApi";
+import { useGetSocialPostsQuery } from "@/store/api/socialApi";
 import { SkeletonCard } from "@/components/ui/SkeletonCard";
 import { DraggableFeed } from "@/components/ui/DraggableFeed";
-import { mapNewsToContentItem, mapMovieToContentItem } from "@/lib/dataMapper";
+import {
+  mapNewsToContentItem,
+  mapMovieToContentItem,
+  mapSocialToContentItem,
+} from "@/lib/dataMapper";
+import { useTranslation } from "react-i18next";
+import { Category } from "@/types";
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 9;
 
 export default function DashboardPage() {
+  const { t } = useTranslation();
+
+  // 1. Read categories and search query from Redux
   const categories = useAppSelector(
     (state) => state.preferences.selectedCategories,
   );
-
-  // FIX: Add '|| ""' to prevent undefined errors from old cached Redux state
   const searchQuery = useAppSelector((state) => state.ui.searchQuery || "");
-
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
-  const { data: newsData, isLoading: isNewsLoading } =
-    useGetNewsQuery(categories);
+  const { data: newsData, isLoading: isNewsLoading } = useGetNewsQuery();
   const { data: moviesData, isLoading: isMoviesLoading } =
     useGetRecommendationsQuery();
+  const { data: socialData, isLoading: isSocialLoading } =
+    useGetSocialPostsQuery();
 
+  // 2. Combine and map data
   const unifiedFeed = useMemo(() => {
     const newsItems = newsData?.map(mapNewsToContentItem) || [];
     const movieItems = moviesData?.map(mapMovieToContentItem) || [];
-    return [...newsItems, ...movieItems].sort(() => Math.random() - 0.5);
-  }, [newsData, moviesData]);
+    const socialItems = socialData?.map(mapSocialToContentItem) || [];
 
-  // Filter feed based on search query
+    return [...newsItems, ...movieItems, ...socialItems].sort(
+      () => Math.random() - 0.5,
+    );
+  }, [newsData, moviesData, socialData]);
+
+  // 3. Filter by selected categories (Settings Preferences)
+  const categoryFilteredFeed = useMemo(() => {
+    if (categories.length === 0) return [];
+    return unifiedFeed.filter((item) =>
+      categories.includes(item.category as Category),
+    );
+  }, [unifiedFeed, categories]);
+
+  // 4. Filter by search query
   const filteredFeed = useMemo(() => {
-    if (!searchQuery.trim()) return unifiedFeed;
+    if (!searchQuery.trim()) return categoryFilteredFeed;
     const lowerQuery = searchQuery.toLowerCase();
-    return unifiedFeed.filter(
+    return categoryFilteredFeed.filter(
       (item) =>
         item.title.toLowerCase().includes(lowerQuery) ||
         item.description.toLowerCase().includes(lowerQuery) ||
         item.category.toLowerCase().includes(lowerQuery),
     );
-  }, [unifiedFeed, searchQuery]);
+  }, [categoryFilteredFeed, searchQuery]);
 
   const visibleItems = filteredFeed.slice(0, visibleCount);
   const hasMore = visibleCount < filteredFeed.length;
-  const isLoading = isNewsLoading || isMoviesLoading;
+  const isLoading = isNewsLoading || isMoviesLoading || isSocialLoading;
 
+  // 5. Show empty state if no categories are selected
   if (categories.length === 0) {
     return (
       <div className="flex h-[50vh] flex-col items-center justify-center text-center">
@@ -65,13 +87,17 @@ export default function DashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-text-primary">
-            Your Personalized Feed
+            {t("dashboard.title")}
           </h1>
           <p className="mt-1 text-sm text-slate-600 dark:text-text-secondary">
             {isLoading
-              ? "Fetching your content..."
-              : `Showing ${visibleItems.length} of ${filteredFeed.length} items`}
-            {searchQuery && ` matching "${searchQuery}"`}
+              ? t("dashboard.fetching")
+              : t("dashboard.showing", {
+                  count: visibleItems.length,
+                  total: filteredFeed.length,
+                })}
+            {searchQuery &&
+              ` ${t("dashboard.matching", { query: searchQuery })}`}
           </p>
         </div>
       </div>
@@ -86,8 +112,8 @@ export default function DashboardPage() {
         <div className="rounded-xl border border-dashed border-slate-300 dark:border-border-base p-12 text-center">
           <p className="text-slate-500 dark:text-text-secondary">
             {searchQuery
-              ? `No results found for "${searchQuery}".`
-              : "No content found for your selected categories."}
+              ? t("dashboard.noResults", { query: searchQuery })
+              : "No content found for your selected categories. (Note: Our real APIs currently only provide Technology, Social and Entertainment data)."}
           </p>
         </div>
       ) : (
@@ -100,7 +126,7 @@ export default function DashboardPage() {
                 onClick={() => setVisibleCount((prev) => prev + ITEMS_PER_PAGE)}
                 className="rounded-lg border border-slate-200 dark:border-border-base bg-white dark:bg-bg-surface px-6 py-2 text-sm font-medium text-slate-700 dark:text-text-primary hover:bg-slate-50 dark:hover:bg-bg-base transition-colors"
               >
-                Load More
+                {t("dashboard.loadMore")}
               </button>
             </div>
           )}

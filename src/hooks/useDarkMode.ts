@@ -8,17 +8,14 @@ export function useDarkMode() {
 
   useEffect(() => {
     const root = window.document.documentElement;
-    console.log("Dark mode state:", isDarkMode); // Debug log
+    const body = window.document.body;
 
     if (isDarkMode) {
       root.classList.add("dark");
-      console.log("Added dark class");
+      body.setAttribute("data-theme", "dark");
     } else {
       root.classList.remove("dark");
-      console.log("Removed dark class");
+      body.removeAttribute("data-theme");
     }
-
-    // Verify the class is actually there
-    console.log("HTML classList:", Array.from(root.classList));
   }, [isDarkMode]);
 }

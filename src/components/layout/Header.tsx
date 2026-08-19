@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Moon, Sun, Menu, User, X } from "lucide-react";
+import { Search, Moon, Sun, Menu, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   toggleDarkMode,
@@ -9,6 +9,7 @@ import {
 } from "@/store/slices/uiSlice";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export function Header() {
   const dispatch = useAppDispatch();
@@ -16,7 +17,9 @@ export function Header() {
   const searchQuery = useAppSelector((state) => state.ui.searchQuery);
 
   const [inputValue, setInputValue] = useState(searchQuery);
-  const debouncedSearch = useDebounce(inputValue, 500); // 500ms delay
+  const debouncedSearch = useDebounce(inputValue, 500);
+  const { t } = useTranslation();
+  const userName = useAppSelector((state) => state.auth.userName);
 
   // Sync debounced value back to Redux
   useEffect(() => {
@@ -51,7 +54,7 @@ export function Header() {
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Search news, movies, or posts..."
+            placeholder={t("header.searchPlaceholder")}
             className="w-full rounded-lg border border-slate-200 dark:border-border-base bg-slate-50 dark:bg-bg-base py-2 pl-10 pr-10 text-sm text-slate-900 dark:text-text-primary placeholder-slate-400 dark:placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-accent-base/50 transition-all"
           />
           {inputValue && (
@@ -72,25 +75,29 @@ export function Header() {
         {/* Dark Mode Toggle */}
         <button
           onClick={() => dispatch(toggleDarkMode())}
-          className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-text-secondary dark:hover:bg-bg-base dark:hover:text-text-primary transition-colors"
+          className="rounded-lg p-2 cursor-pointer text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-text-secondary dark:hover:bg-bg-base dark:hover:text-text-primary transition-colors"
           aria-label="Toggle Dark Mode"
         >
           {isDarkMode ? (
-            <Sun size={20} className="text-accent-base" />
+            <Sun
+              size={20}
+              className="text-accent-base"
+              data-testid="sun-icon"
+            />
           ) : (
-            <Moon size={20} />
+            <Moon size={20} data-testid="moon-icon" />
           )}
         </button>
 
         {/* User Profile */}
-        <button className="flex items-center gap-2 rounded-lg p-1 hover:bg-slate-100 dark:hover:bg-bg-base transition-colors">
+        <div className="flex items-center gap-2 rounded-lg p-1">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 dark:bg-accent-base text-slate-700 dark:text-bg-base font-bold shadow-lg">
-            <User size={16} />
+            {userName ? userName.charAt(0).toUpperCase() : "U"}
           </div>
           <span className="hidden text-sm font-medium text-slate-700 dark:text-text-primary md:block">
-            User
+            {userName || "User"}
           </span>
-        </button>
+        </div>
       </div>
     </header>
   );

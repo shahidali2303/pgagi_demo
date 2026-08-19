@@ -4,6 +4,7 @@ import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import { useDarkMode } from "@/hooks/useDarkMode";
 import { PageTransition } from "@/components/ui/PageTransition";
+import { ToastContainer } from "@/components/ui/ToastContainer";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -21,6 +22,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <PageTransition>{children}</PageTransition>
         </main>
       </div>
+      <ToastContainer />
     </div>
   );
 }

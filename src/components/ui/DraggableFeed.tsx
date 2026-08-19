@@ -43,21 +43,22 @@ function SortableCard({ content }: { content: ContentItem }) {
   };
 
   return (
-    <div ref={setNodeRef} style={style} className="relative">
-      {/* Drag Handle */}
+    <div ref={setNodeRef} style={style} className="relative group/card">
+      {/* 
+        FIX: Drag handle is now always 50% visible, moves to top-right, 
+        and becomes fully opaque on hover. 
+      */}
       <div
         {...attributes}
         {...listeners}
-        className="absolute -top-3 -left-3 z-50 flex h-8 w-8 cursor-grab items-center justify-center rounded-full bg-slate-800 dark:bg-accent-base text-white shadow-lg opacity-0 group-hover/card:opacity-100 transition-opacity hover:scale-110 active:cursor-grabbing"
+        className="absolute top-3 right-3 z-50 flex h-8 w-8 cursor-grab items-center justify-center rounded-lg bg-black/60 backdrop-blur-sm text-white shadow-md opacity-50 group-hover/card:opacity-100 transition-all hover:scale-110 active:cursor-grabbing hover:bg-black/80"
         title="Drag to reorder"
       >
         <GripVertical size={16} />
       </div>
 
-      {/* We pass a special class to ContentCard to enable group hover */}
-      <div className="group/card">
-        <ContentCard content={content} />
-      </div>
+      {/* The actual Content Card */}
+      <ContentCard content={content} />
     </div>
   );
 }

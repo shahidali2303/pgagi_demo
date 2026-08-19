@@ -9,7 +9,9 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import authReducer from "./slices/authSlice";
+
+import storage from "@/lib/redux-persist-storage";
 
 import uiReducer from "./slices/uiSlice";
 import preferencesReducer from "./slices/preferencesSlice";
@@ -20,14 +22,14 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  // Persist UI, preferences, and favorites
-  whitelist: ["ui", "preferences", "favorites"],
+  whitelist: ["ui", "preferences", "favorites", "auth"], // Only persist these slices
 };
 
 const rootReducer = combineReducers({
   ui: uiReducer,
   preferences: preferencesReducer,
   favorites: favoritesReducer,
+  auth: authReducer,
   [baseApi.reducerPath]: baseApi.reducer,
 });
 

@@ -6,7 +6,7 @@ interface PreferencesState {
 }
 
 const initialState: PreferencesState = {
-  selectedCategories: ["technology", "sports", "finance"], // Default preferences
+  selectedCategories: ["technology", "entertainment"],
 };
 
 export const preferencesSlice = createSlice({
@@ -23,11 +23,13 @@ export const preferencesSlice = createSlice({
         state.selectedCategories.push(category);
       }
     },
-    setCategories: (state, action: PayloadAction<Category[]>) => {
-      state.selectedCategories = action.payload;
+    // ADD THIS ACTION:
+    clearAllCategories: (state) => {
+      state.selectedCategories = [];
     },
   },
 });
 
-export const { toggleCategory, setCategories } = preferencesSlice.actions;
+// Make sure to export the new action here:
+export const { toggleCategory, clearAllCategories } = preferencesSlice.actions;
 export default preferencesSlice.reducer;

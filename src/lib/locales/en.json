@@ -1,0 +1,22 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "trending": "Trending",
+    "favorites": "Favorites",
+    "settings": "Settings"
+  },
+  "header": {
+    "searchPlaceholder": "Search news, movies, or posts...",
+    "user": "User",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Your Personalized Feed",
+    "fetching": "Fetching live content...",
+    "showing": "Showing {{count}} of {{total}} items",
+    "matching": "matching \"{{query}}\"",
+    "noResults": "No results found for \"{{query}}\".",
+    "noContent": "No content found.",
+    "loadMore": "Load More"
+  }
+}
