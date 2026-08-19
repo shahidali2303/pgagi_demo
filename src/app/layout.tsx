@@ -17,32 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // suppressHydrationWarning prevents errors from browser extensions (like Grammarly)
+    // and from the theme class changing before React hydrates.
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                const storedTheme = localStorage.getItem('persist:root');
-                if (storedTheme) {
-                  try {
-                    const parsed = JSON.parse(storedTheme);
-                    const uiState = JSON.parse(parsed.ui);
-                    if (uiState.isDarkMode) {
-                      document.documentElement.classList.add('dark');
-                    }
-                  } catch (e) {
-                    console.error('Error parsing theme:', e);
-                  }
-                }
-              })();
-            `,
-          }}
-        />
-      </head>
-      {/* Added transition-colors duration-300 ease-in-out */}
       <body
         className={`${inter.className} antialiased transition-colors duration-300 ease-in-out`}
+        suppressHydrationWarning
       >
         <StoreProvider>
           <DashboardLayout>{children}</DashboardLayout>

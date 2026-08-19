@@ -12,17 +12,22 @@ import {
 import storage from "redux-persist/lib/storage";
 
 import uiReducer from "./slices/uiSlice";
+import preferencesReducer from "./slices/preferencesSlice";
+import favoritesReducer from "./slices/favoritesSlice";
 import { baseApi } from "./api/baseApi";
 
 const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["ui"], // Persist UI state (like dark mode)
+  // Persist UI, preferences, and favorites
+  whitelist: ["ui", "preferences", "favorites"],
 };
 
 const rootReducer = combineReducers({
   ui: uiReducer,
+  preferences: preferencesReducer,
+  favorites: favoritesReducer,
   [baseApi.reducerPath]: baseApi.reducer,
 });
 

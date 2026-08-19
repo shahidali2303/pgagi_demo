@@ -1,16 +1,38 @@
 "use client";
 
-import { Search, Moon, Sun, Menu, User } from "lucide-react";
+import { Search, Moon, Sun, Menu, User, X } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { toggleDarkMode, toggleSidebar } from "@/store/slices/uiSlice";
+import {
+  toggleDarkMode,
+  toggleSidebar,
+  setSearchQuery,
+} from "@/store/slices/uiSlice";
+import { useDebounce } from "@/hooks/useDebounce";
+import { useEffect, useState } from "react";
 
 export function Header() {
   const dispatch = useAppDispatch();
   const isDarkMode = useAppSelector((state) => state.ui.isDarkMode);
+  const searchQuery = useAppSelector((state) => state.ui.searchQuery);
+
+  const [inputValue, setInputValue] = useState(searchQuery);
+  const debouncedSearch = useDebounce(inputValue, 500); // 500ms delay
+
+  // Sync debounced value back to Redux
+  useEffect(() => {
+    dispatch(setSearchQuery(debouncedSearch));
+  }, [debouncedSearch, dispatch]);
+
+  // Sync local input with Redux if cleared elsewhere
+  useEffect(() => {
+    if (searchQuery === "") {
+      setInputValue("");
+    }
+  }, [searchQuery]);
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-slate-200 dark:border-border-base bg-white/80 dark:bg-bg-surface/80 backdrop-blur-md px-4 lg:px-6 transition-colors duration-300 ease-in-out">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 flex-1">
         {/* Mobile Menu Toggle */}
         <button
           onClick={() => dispatch(toggleSidebar())}
@@ -20,17 +42,29 @@ export function Header() {
         </button>
 
         {/* Search Bar */}
-        <div className="relative hidden sm:block">
+        <div className="relative flex-1 max-w-md">
           <Search
             className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-text-secondary transition-colors"
             size={18}
           />
           <input
             type="text"
-            placeholder="Search content..."
-            // Added transition-colors
-            className="w-64 rounded-lg border border-slate-200 dark:border-border-base bg-slate-50 dark:bg-bg-base py-2 pl-10 pr-4 text-sm text-slate-900 dark:text-text-primary placeholder-slate-400 dark:placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-accent-base/50 transition-colors duration-300"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Search news, movies, or posts..."
+            className="w-full rounded-lg border border-slate-200 dark:border-border-base bg-slate-50 dark:bg-bg-base py-2 pl-10 pr-10 text-sm text-slate-900 dark:text-text-primary placeholder-slate-400 dark:placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-accent-base/50 transition-all"
           />
+          {inputValue && (
+            <button
+              onClick={() => {
+                setInputValue("");
+                dispatch(setSearchQuery(""));
+              }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-text-primary"
+            >
+              <X size={16} />
+            </button>
+          )}
         </div>
       </div>
 
