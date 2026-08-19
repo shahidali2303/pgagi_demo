@@ -20,7 +20,7 @@ const ITEMS_PER_PAGE = 9;
 export default function DashboardPage() {
   const { t } = useTranslation();
 
-  // 1. Read categories and search query from Redux
+  // Read categories and search query from Redux
   const categories = useAppSelector(
     (state) => state.preferences.selectedCategories,
   );
@@ -33,7 +33,7 @@ export default function DashboardPage() {
   const { data: socialData, isLoading: isSocialLoading } =
     useGetSocialPostsQuery();
 
-  // 2. Combine and map data
+  // Combine and map data
   const unifiedFeed = useMemo(() => {
     const newsItems = newsData?.map(mapNewsToContentItem) || [];
     const movieItems = moviesData?.map(mapMovieToContentItem) || [];
@@ -44,7 +44,7 @@ export default function DashboardPage() {
     );
   }, [newsData, moviesData, socialData]);
 
-  // 3. Filter by selected categories (Settings Preferences)
+  // Filter by selected categories (Settings Preferences)
   const categoryFilteredFeed = useMemo(() => {
     if (categories.length === 0) return [];
     return unifiedFeed.filter((item) =>
@@ -52,7 +52,7 @@ export default function DashboardPage() {
     );
   }, [unifiedFeed, categories]);
 
-  // 4. Filter by search query
+  // Filter by search query
   const filteredFeed = useMemo(() => {
     if (!searchQuery.trim()) return categoryFilteredFeed;
     const lowerQuery = searchQuery.toLowerCase();
@@ -68,7 +68,7 @@ export default function DashboardPage() {
   const hasMore = visibleCount < filteredFeed.length;
   const isLoading = isNewsLoading || isMoviesLoading || isSocialLoading;
 
-  // 5. Show empty state if no categories are selected
+  // Show empty state if no categories are selected
   if (categories.length === 0) {
     return (
       <div className="flex h-[50vh] flex-col items-center justify-center text-center">
