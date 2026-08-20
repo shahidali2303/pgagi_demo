@@ -4,7 +4,7 @@ A modern, highly interactive, and fully responsive dashboard that aggregates rea
 
 🔗 **Live Demo:** https://pgagi-demo.vercel.app
 📂 **Repository:** https://github.com/shahidali2303/pgagi_demo
-🎥 **Demo Video:**
+🎥 **Demo Video:** https://drive.google.com/file/d/1oTmdMifeX25y6zuGeUzQ4rCVMdIOP0Qy/view?usp=sharing
 
 ---
 
